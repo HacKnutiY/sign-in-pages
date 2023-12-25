@@ -1,20 +1,32 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:djigit_tasks/components/text_field.dart';
 import 'package:djigit_tasks/components/button.dart';
+import 'package:flutter/services.dart';
 
 class NewAdScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    void pressedMeth() {
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/ads_list', ModalRoute.withName('/'));
+    }
+
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
+          toolbarHeight: 50,
           backgroundColor: Colors.transparent,
-          leading: Icon(Icons.arrow_back),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: pressedMeth,
+          ),
           actions: [
             TextButton(
               child: Text("Сохранить и выйти"),
-              onPressed: () => {},
+              onPressed: pressedMeth,
             ),
             SizedBox(
               width: 15,
@@ -22,6 +34,14 @@ class NewAdScreen extends StatelessWidget {
           ],
         ),
         backgroundColor: Color(0xffF5F5F5),
+        bottomNavigationBar: Padding(
+            padding: EdgeInsetsDirectional.all(14),
+            child: MyButton(
+              "Разместить объявление",
+              onPressed: () {
+                pressedMeth();
+              },
+            )),
         body: SafeArea(
           child: Padding(
               padding: EdgeInsets.all(16),
@@ -34,104 +54,66 @@ class NewAdScreen extends StatelessWidget {
                   SizedBox(
                     height: 40,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Название объявления",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w600),
-                      ),
-                      MyAddTextField(
+                  myListItem(
+                      textFieldWidget: MyAddTextField(
                         hint: "Введите название",
                       ),
-                    ],
-                  ),
+                      textFieldName: "Название объявления"),
                   SizedBox(
                     height: 20,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Описание",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w600),
-                      ),
-                      MyAddTextField(
+                  myListItem(
+                      textFieldWidget: MyAddTextField(
                         hint: "Введите описание",
                         LinesCount: 3,
                       ),
-                    ],
-                  ),
+                      textFieldName: "Описание"),
                   SizedBox(
                     height: 20,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Куда",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w600),
-                      ),
-                      MyAddTextField(
+                  myListItem(
+                      textFieldWidget: MyAddTextField(
                         type: TextInputType.datetime,
                         hint: "Страна, Город, Аэропорт",
                       ),
-                    ],
-                  ),
+                      textFieldName: "Куда"),
                   SizedBox(
                     height: 20,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Откуда",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w600),
-                      ),
-                      MyAddTextField(
+                  myListItem(
+                      textFieldWidget: MyAddTextField(
                         type: TextInputType.datetime,
                         hint: "Страна, Город, Аэропорт",
                       ),
-                    ],
-                  ),
+                      textFieldName: "Откуда"),
                   SizedBox(
                     height: 20,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Дата въезда",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w600),
-                      ),
-                      MyDateTextField()
-                    ],
-                  ),
+                  myListItem(
+                      textFieldWidget: MyDateTextField(),
+                      textFieldName: "Дата отъезда"),
                   SizedBox(
                     height: 20,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Дата отъезда",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w600),
-                      ),
-                      MyDateTextField()
-                    ],
-                  ),
-                  SizedBox(
-                    height: 45,
-                  ),
-                  MyButton("Разместить объявление")
+                  myListItem(
+                      textFieldWidget: MyDateTextField(),
+                      textFieldName: "Дата приезда"),
                 ],
               )),
         ));
   }
+}
+
+Widget myListItem(
+    {required Widget textFieldWidget, required String textFieldName}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        textFieldName,
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, height: 2),
+      ),
+      textFieldWidget,
+    ],
+  );
 }

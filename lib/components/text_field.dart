@@ -8,8 +8,9 @@ class MySignTextField extends StatelessWidget {
   String _prefixText = "";
   String? _helperText = "";
   int? _lengthLimit = 30;
+  TextEditingController? _controller;
 
-  MySignTextField(this._labelText, this._type, {helperText}) {
+  MySignTextField(this._labelText, this._type, {helperText, controller}) {
     if (this._type == TextInputType.phone) {
       _prefixText = "+ 7 ";
       _lengthLimit = 10;
@@ -17,55 +18,9 @@ class MySignTextField extends StatelessWidget {
     if (helperText != null) {
       _helperText = helperText;
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      TextFormField(
-          keyboardType: _type,
-          inputFormatters: [
-            LengthLimitingTextInputFormatter(_lengthLimit),
-          ],
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(vertical: 30, horizontal: 25),
-            //prefix style
-            prefixText: "$_prefixText",
-            prefixStyle: TextStyle(color: Colors.black),
-
-            //label style
-            label: Text("$_labelText"),
-            labelStyle: TextStyle(color: Colors.grey[400]),
-
-            //sufix style
-            suffixIcon: IconButton(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              enableFeedback: false,
-              onPressed: null,
-              icon: Icon(
-                Icons.clear,
-                size: 30,
-                color: Colors.black,
-              ),
-            ),
-
-            //border style
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
-              borderSide: BorderSide(width: 1, color: Colors.grey),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                width: 2, color: Colors.grey, //<-- SEE HERE
-              ),
-            ),
-          )),
-      getHelperText("$_helperText",
-          _type), //Если поле для ввода кода на номер, товнизу появляется кнопка переотправки кода
-    ]);
+    if (controller != null) {
+      this._controller = controller;
+    }
   }
 
   Widget getHelperText(String? helperText, TextInputType? type) {
@@ -89,6 +44,56 @@ class MySignTextField extends StatelessWidget {
     } else {
       return SizedBox();
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      TextFormField(
+          controller: _controller,
+          keyboardType: _type,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(_lengthLimit),
+          ],
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(vertical: 30, horizontal: 25),
+            //prefix style
+            prefixText: "$_prefixText",
+            prefixStyle: TextStyle(color: Colors.black),
+
+            //label style
+            label: Text("$_labelText"),
+            labelStyle: TextStyle(color: Colors.grey[400]),
+
+            //sufix style
+/*            suffixIcon: IconButton(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              enableFeedback: false,
+              onPressed: null,
+              icon: Icon(
+                Icons.clear,
+                size: 30,
+                color: Colors.black,
+              ),
+            ),
+*/
+            //border style
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(6),
+              borderSide: BorderSide(width: 1, color: Colors.grey),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                width: 2, color: Colors.grey, //<-- SEE HERE
+              ),
+            ),
+          )),
+      getHelperText("$_helperText",
+          _type), //Если поле для ввода кода на номер, товнизу появляется кнопка переотправки кода
+    ]);
   }
 }
 

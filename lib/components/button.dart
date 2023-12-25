@@ -5,20 +5,22 @@ import 'package:flutter/material.dart';
 class MyButton extends StatelessWidget {
   String _buttonText;
   String? _icon = "";
-  TextStyle _textStyle =
+  TextStyle _iconStyle =
       TextStyle(fontSize: 48, color: Colors.white, fontWeight: FontWeight.w100);
-  MyButton(this._buttonText, [icon, textStyle]) {
+  VoidCallback? _onPressedFun; //ОБЪЯВИЛ ПОЛЕ !!!!!
+
+  MyButton(this._buttonText, {icon, textStyle, onPressed}) {
     if (icon != null) {
       this._icon = icon;
       if (textStyle != null) {
-        _textStyle = textStyle;
+        _iconStyle = textStyle;
       }
     }
+    _onPressedFun = onPressed;
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
       width: double.infinity,
       child: ElevatedButton.icon(
@@ -27,10 +29,10 @@ class MyButton extends StatelessWidget {
             primary: Color(0xff3B59A8),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(6))),
-        onPressed: () {},
+        onPressed: _onPressedFun, 
         icon: Text(
           "$_icon",
-          style: _textStyle,
+          style: _iconStyle,
         ),
         label: Text(
           "$_buttonText",

@@ -2,15 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:djigit_tasks/components/text_field.dart';
 import 'package:djigit_tasks/components/button.dart';
 
-class SignPage_second extends StatelessWidget {
+import 'package:djigit_tasks/pages/new_ad_page.dart';
+import 'package:djigit_tasks/pages/my_adds.dart';
+
+class SignScreen_second extends StatelessWidget {
+  final myCodeController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    RouteSettings settings = ModalRoute.of(context)!.settings;
+    String _message = settings.arguments.toString();
     return Scaffold(
       body: SafeArea(
           //WRAPPER
           child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16),
-        child: Column(children: [
+        child: ListView(children: [
           SizedBox(
             height: 185,
           ),
@@ -27,7 +34,7 @@ class SignPage_second extends StatelessWidget {
                 ),
               ),
               Text(
-                "Введите код, отправленный на номер [код из экрана 1]",
+                "Введите код, отправленный на номер $_message",
                 style: TextStyle(
                   fontSize: 20,
                   color: Color.fromARGB(71, 0, 0, 0),
@@ -46,10 +53,20 @@ class SignPage_second extends StatelessWidget {
               "Код из СМС",
               TextInputType.number,
               helperText: "Получить код повторно",
+              controller: myCodeController,
             ),
-            MyButton("Продолжить"),
+            MyButton(
+              "Продолжить",
+              onPressed: () {
+                if (myCodeController.text.length != 0) {
+                  /*Route route =
+                      MaterialPageRoute(builder: (context) => MyAddsScreen());*/
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, '/ads_list', ModalRoute.withName('/'));
+                }
+              },
+            ),
           ]),
-          
         ]),
       )),
     );
