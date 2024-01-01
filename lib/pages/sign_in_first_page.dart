@@ -52,7 +52,7 @@ class SignIn_first extends StatelessWidget {
                   MySignTextField(
                     "Номер телефона",
                     TextInputType.phone,
-                    controller: myPhoneController,
+                    myPhoneController,
                   ),
                   SizedBox(
                     height: 25,
@@ -60,7 +60,7 @@ class SignIn_first extends StatelessWidget {
                   MySignTextField(
                     "Ваше имя",
                     TextInputType.name,
-                    controller: myNameController,
+                    myNameController,
                   ),
                   SizedBox(
                     height: 80,

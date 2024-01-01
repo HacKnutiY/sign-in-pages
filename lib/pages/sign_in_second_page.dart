@@ -53,7 +53,7 @@ class SignScreen_second extends StatelessWidget {
               "Код из СМС",
               TextInputType.number,
               helperText: "Получить код повторно",
-              controller: myCodeController,
+              myCodeController,
             ),
             MyButton(
               "Продолжить",

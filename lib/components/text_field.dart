@@ -8,9 +8,9 @@ class MySignTextField extends StatelessWidget {
   String _prefixText = "";
   String? _helperText = "";
   int? _lengthLimit = 30;
-  TextEditingController? _controller;
+  TextEditingController _controller;
 
-  MySignTextField(this._labelText, this._type, {helperText, controller}) {
+  MySignTextField(this._labelText, this._type, this._controller, {helperText}) {
     if (this._type == TextInputType.phone) {
       _prefixText = "+ 7 ";
       _lengthLimit = 10;
@@ -18,9 +18,10 @@ class MySignTextField extends StatelessWidget {
     if (helperText != null) {
       _helperText = helperText;
     }
-    if (controller != null) {
-      this._controller = controller;
-    }
+  }
+
+  void _onCrossPressed() {
+    _controller.clear();
   }
 
   Widget getHelperText(String? helperText, TextInputType? type) {
@@ -67,19 +68,18 @@ class MySignTextField extends StatelessWidget {
             label: Text("$_labelText"),
             labelStyle: TextStyle(color: Colors.grey[400]),
 
-            //sufix style
-/*            suffixIcon: IconButton(
+            suffixIcon: IconButton(
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               enableFeedback: false,
-              onPressed: null,
+              onPressed: _onCrossPressed,
               icon: Icon(
                 Icons.clear,
                 size: 30,
                 color: Colors.black,
               ),
             ),
-*/
+
             //border style
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(6),
