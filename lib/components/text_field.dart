@@ -8,20 +8,21 @@ class MySignTextField extends StatelessWidget {
   String _prefixText = "";
   String? _helperText = "";
   int? _lengthLimit = 30;
+  Widget? _errorText;
   TextEditingController _controller;
 
-  MySignTextField(this._labelText, this._type, this._controller, {helperText}) {
+  MySignTextField(this._labelText, this._type, this._controller,
+      {helperText, errorText}) {
     if (this._type == TextInputType.phone) {
       _prefixText = "+ 7 ";
       _lengthLimit = 10;
+    } else if (this._type == TextInputType.number) {
+      _lengthLimit = 6;
     }
     if (helperText != null) {
       _helperText = helperText;
     }
-  }
-
-  void _onCrossPressed() {
-    _controller.clear();
+    this._errorText = errorText;
   }
 
   Widget getHelperText(String? helperText, TextInputType? type) {
@@ -60,6 +61,20 @@ class MySignTextField extends StatelessWidget {
           ],
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 30, horizontal: 25),
+            //Errors
+            error: _errorText,
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(6),
+              borderSide: BorderSide(
+                color: Color.fromARGB(255, 255, 0, 0),
+              ),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(6),
+              borderSide: BorderSide(
+                color: Color.fromARGB(255, 255, 0, 0),
+              ),
+            ),
             //prefix style
             prefixText: "$_prefixText",
             prefixStyle: TextStyle(color: Colors.black),
@@ -72,7 +87,9 @@ class MySignTextField extends StatelessWidget {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               enableFeedback: false,
-              onPressed: _onCrossPressed,
+              onPressed: () {
+                _controller.clear();
+              },
               icon: Icon(
                 Icons.clear,
                 size: 30,

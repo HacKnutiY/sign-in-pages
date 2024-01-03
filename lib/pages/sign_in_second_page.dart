@@ -6,8 +6,6 @@ import 'package:djigit_tasks/pages/new_ad_page.dart';
 import 'package:djigit_tasks/pages/my_adds.dart';
 
 class SignScreen_second extends StatelessWidget {
-  final myCodeController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     RouteSettings settings = ModalRoute.of(context)!.settings;
@@ -48,27 +46,48 @@ class SignScreen_second extends StatelessWidget {
           ),
 
           //Text forms field wrapper
-          Column(children: [
-            MySignTextField(
-              "Код из СМС",
-              TextInputType.number,
-              helperText: "Получить код повторно",
-              myCodeController,
-            ),
-            MyButton(
-              "Продолжить",
-              onPressed: () {
-                if (myCodeController.text.length != 0) {
-                  /*Route route =
-                      MaterialPageRoute(builder: (context) => MyAddsScreen());*/
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, '/ads_list', ModalRoute.withName('/'));
-                }
-              },
-            ),
-          ]),
+          _MyForm()
         ]),
       )),
     );
+  }
+}
+
+class _MyForm extends StatefulWidget {
+  @override
+  _MyFormState createState() => _MyFormState();
+}
+
+class _MyFormState extends State<_MyForm> {
+  final myCodeController = TextEditingController();
+  Widget? _errorText;
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Column(children: [
+      MySignTextField(
+        "Код из СМС",
+        TextInputType.number,
+        helperText: "Получить код повторно",
+        myCodeController,
+        errorText: _errorText,
+      ),
+      MyButton(
+        "Продолжить",
+        onPressed: () {
+          if (myCodeController.text.length == 6) {
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/ads_list', ModalRoute.withName('/'));
+            _errorText = null;
+          } else {
+            _errorText = Text(
+              "Код должен состоять из 6 символов",
+              style: TextStyle(color: Colors.red),
+            );
+          }
+          setState(() {});
+        },
+      ),
+    ]);
   }
 }

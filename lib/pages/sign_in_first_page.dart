@@ -6,11 +6,10 @@ import 'package:djigit_tasks/components/button.dart';
 import 'package:djigit_tasks/pages/sign_in_second_page.dart';
 
 class SignIn_first extends StatelessWidget {
+  final myPhoneController = TextEditingController();
+  final myNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final myPhoneController = TextEditingController();
-    final myNameController = TextEditingController();
-
     return Scaffold(
       body: ListView(
           //WRAPPER
@@ -48,37 +47,88 @@ class SignIn_first extends StatelessWidget {
                 ),
 
                 //Text forms field wrapper
-                Column(children: [
-                  MySignTextField(
-                    "Номер телефона",
-                    TextInputType.phone,
-                    myPhoneController,
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  MySignTextField(
-                    "Ваше имя",
-                    TextInputType.name,
-                    myNameController,
-                  ),
-                  SizedBox(
-                    height: 80,
-                  ),
-                  MyButton("Продолжить", onPressed: () {
-                    if (myNameController.text.length > 2 &&
-                        myPhoneController.text.length == 10) {
-                      Navigator.pushNamed(context, '/auth/auth2',
-                          arguments: "+7 " + myPhoneController.text);
-                    }
-                  }),
-                  SizedBox(
-                    height: 40,
-                  )
-                ]),
+                _MyForm(),
               ]),
             )
           ]),
     );
   }
 }
+
+class _MyForm extends StatefulWidget {
+  @override
+  _MyFormState createState() => _MyFormState();
+}
+
+class _MyFormState extends State<_MyForm> {
+  Widget? _namedError;
+  Widget? _phonedError;
+  final myPhoneController = TextEditingController();
+  final myNameController = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Column(children: [
+      MySignTextField(
+        "Номер телефона",
+        TextInputType.phone,
+        myPhoneController,
+        errorText: _phonedError,
+      ),
+      SizedBox(
+        height: 25,
+      ),
+      MySignTextField(
+        "Ваше имя",
+        TextInputType.name,
+        myNameController,
+        errorText: _namedError,
+      ),
+      SizedBox(
+        height: 80,
+      ),
+      MyButton("Продолжить", onPressed: () {
+        bool _isNameFieldOk = myNameController.text.length >= 2;
+        bool _isPhoneFieldOk = myPhoneController.text.length == 10;
+        if (_isNameFieldOk && _isPhoneFieldOk) {
+          _phonedError = null;
+          _namedError = null;
+          Navigator.pushNamed(context, '/auth/auth2',
+              arguments: "+7 " + myPhoneController.text);
+          setState(() {});
+        } else if (!_isNameFieldOk && _isPhoneFieldOk) {
+          _phonedError = null;
+          _namedError = Text(
+            "Неккоректное значение в поле",
+            style: TextStyle(color: Colors.red),
+          );
+          setState(() {});
+        } else if (!_isPhoneFieldOk && _isNameFieldOk) {
+          _namedError = null;
+          _phonedError = Text(
+            "Номер введен неправильно",
+            style: TextStyle(color: Colors.red),
+          );
+          setState(() {});
+        } else {
+          _namedError = Text(
+            "Неккоректное значение в поле",
+            style: TextStyle(color: Colors.red),
+          );
+          _phonedError = Text(
+            "Номер введен неправильно",
+            style: TextStyle(color: Colors.red),
+          );
+          setState(() {});
+        }
+      }),
+      SizedBox(
+        height: 40,
+      )
+    ]);
+  }
+}
+
+/*
+
+*/
